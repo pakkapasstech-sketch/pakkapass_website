@@ -77,21 +77,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "PakkaPass — Exam-Centric Learning App for Class 10, 11 & 12" },
+      {
+        name: "description",
+        content:
+          "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. Access expert video lectures, digital notes, previous year papers, mock tests and progress tracking in one place.",
+      },
+      { name: "author", content: "PakkaPass" },
+      { property: "og:title", content: "PakkaPass — an exam-centric App" },
+      {
+        property: "og:description",
+        content:
+          "Expert video lectures, notes, previous year papers, mock tests and progress tracking for Class 10, 11 and 12 students.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "PakkaPass" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "PakkaPass — an exam-centric App" },
+      {
+        name: "twitter:description",
+        content:
+          "Learn smarter for board and entrance exams with PakkaPass. Video lectures, notes, PYQs, mock tests and analytics for Class 10–12.",
+      },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
   shellComponent: RootShell,
