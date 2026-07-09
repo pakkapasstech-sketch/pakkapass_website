@@ -6,7 +6,7 @@ import {
   Download, ArrowRight, Clock, Target, Trophy, Globe, Brain, GraduationCap,
   Facebook, Instagram, Twitter, Youtube, Mail, ChevronDown,
 } from "lucide-react";
-import logo from "@/assets/pakkapass-logo.png.asset.json";
+import logo from "@/assets/sidebarlogo.svg";
 import heroImg from "@/assets/hero-students.jpg";
 import appScreen1 from "@/assets/app-screen-1.png";
 import appScreen2 from "@/assets/app-screen-2.png";
@@ -57,8 +57,8 @@ const STEPS = [
 
 const COURSES = [
   { grade: "Class 10", tag: "Board Exam Ready", subjects: "Math • Science • Social Science • English", accent: "from-blue-500 to-indigo-500" },
-  { grade: "Class 11", tag: "Foundation Year", subjects: "Physics • Chemistry • Math • Biology", accent: "from-indigo-500 to-purple-500" },
-  { grade: "Class 12", tag: "Board + Entrance", subjects: "PCM / PCB • Commerce • Humanities", accent: "from-purple-500 to-fuchsia-500" },
+  { grade: "Class 11", tag: "Foundation Year", subjects: "MPC • BIPC • CEC • AEC", accent: "from-indigo-500 to-purple-500" },
+  { grade: "Class 12", tag: "Board + Entrance", subjects: "MPC • BIPC • CEC • AEC", accent: "from-purple-500 to-fuchsia-500" },
 ];
 
 const BENEFITS = [
@@ -114,7 +114,7 @@ function Nav() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
         <a href="#top" className="flex items-center gap-2">
-          <img src={logo.url} alt="PakkaPass" className="h-9 w-auto" />
+          <img src={logo} alt="PakkaPass" className="h-16 w-auto" />
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {NAV.map((n) => (
@@ -561,18 +561,33 @@ function DownloadCTA() {
 function StoreBadge({ store }: { store: "play" | "apple" }) {
   const label = store === "play" ? "Google Play" : "App Store";
   const sub = store === "play" ? "GET IT ON" : "Download on the";
+
+  const href =
+    store === "play"
+      ? "https://play.google.com/store"
+      : "https://apps.apple.com/";
+
   return (
     <a
-      href="#"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="inline-flex items-center gap-3 rounded-2xl bg-black/85 px-5 py-3 text-left text-white transition-transform hover:scale-[1.03]"
     >
       {store === "play" ? (
-        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor"><path d="M3.6 2.3c-.4.2-.6.6-.6 1.1v17.2c0 .5.2.9.6 1.1l10-9.7-10-9.7zM14.6 12l2.9-2.8-11-6.3c-.2-.1-.4-.1-.6 0L14.6 12zm0 0l-8.7 8.7c.2.1.4.1.6 0l11-6.3-2.9-2.4zM20.8 10.6l-2.4-1.4-3 2.8 3 2.4 2.4-1.4c.8-.5.8-1.9 0-2.4z"/></svg>
+        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor">
+          <path d="M3.6 2.3c-.4.2-.6.6-.6 1.1v17.2c0 .5.2.9.6 1.1l10-9.7-10-9.7zM14.6 12l2.9-2.8-11-6.3c-.2-.1-.4-.1-.6 0L14.6 12zm0 0l-8.7 8.7c.2.1.4.1.6 0l11-6.3-2.9-2.4zM20.8 10.6l-2.4-1.4-3 2.8 3 2.4 2.4-1.4c.8-.5.8-1.9 0-2.4z" />
+        </svg>
       ) : (
-        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor"><path d="M16.5 12.7c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.3.8 1.4 0 2.2-1.2 3.1-2.5.7-1 1.2-2.1 1.5-3.2-2.4-.9-2.8-4-2.8-3.8zM14 4.9c.7-.9 1.2-2.1 1.1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.2 1.1.1 2.3-.6 3-1.4z"/></svg>
+        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor">
+          <path d="M16.5 12.7c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.3.8 1.4 0 2.2-1.2 3.1-2.5.7-1 1.2-2.1 1.5-3.2-2.4-.9-2.8-4-2.8-3.8zM14 4.9c.7-.9 1.2-2.1 1.1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.2 1.1.1 2.3-.6 3-1.4z" />
+        </svg>
       )}
+
       <div>
-        <div className="text-[10px] uppercase tracking-wider opacity-80">{sub}</div>
+        <div className="text-[10px] uppercase tracking-wider opacity-80">
+          {sub}
+        </div>
         <div className="text-sm font-semibold leading-none">{label}</div>
       </div>
     </a>
@@ -582,7 +597,6 @@ function StoreBadge({ store }: { store: "play" | "apple" }) {
 function Footer() {
   const cols = [
     { title: "Product", links: ["About", "Features", "Courses", "FAQs"] },
-    { title: "Company", links: ["Contact", "Blog", "Announcements", "Careers"] },
     { title: "Legal", links: ["Privacy Policy", "Terms & Conditions", "Refund Policy", "Cookie Policy"] },
   ];
   return (
@@ -590,7 +604,7 @@ function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-14 md:px-6">
         <div className="grid gap-10 lg:grid-cols-5">
           <div className="lg:col-span-2">
-            <img src={logo.url} alt="PakkaPass" className="h-10 w-auto" />
+            <img src={logo} alt="PakkaPass" className="h-16 w-auto" />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-muted-foreground">
               PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12 — helping India's next generation learn better, one lesson at a time.
             </p>
@@ -617,7 +631,7 @@ function Footer() {
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
           <p>© {new Date().getFullYear()} PakkaPass™ — an exam-centric App. All rights reserved.</p>
-          <p>Made with care for Class 10, 11 & 12 students.</p>
+          
         </div>
       </div>
     </footer>
