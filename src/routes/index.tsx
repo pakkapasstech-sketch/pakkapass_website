@@ -6,7 +6,7 @@ import {
   Download, ArrowRight, Clock, Target, Trophy, Globe, Brain, GraduationCap,
   Facebook, Instagram, Twitter, Youtube, Mail, ChevronDown,
 } from "lucide-react";
-import logo from "@/assets/sidebarlogo.svg";
+import logo from "@/assets/sidebarlogo.png";
 import heroImg from "@/assets/hero-students.jpg";
 import appScreen1 from "@/assets/app-screen-1.png";
 import appScreen2 from "@/assets/app-screen-2.png";
