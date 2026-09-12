@@ -696,10 +696,10 @@ export function PrivacyPolicy() {
                   </div>
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
                     <div className="flex items-center gap-2 font-semibold text-slate-900">
-                      <Bell className="h-4 w-4 text-brand-purple" /> Push Notifications
+                      <Bell className="h-4 w-4 text-brand-purple" /> In-App Notifications
                     </div>
                     <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      Used to send study streak reminders, scheduled live class notifications, important board exam updates, and transaction receipts. Notification permissions can be managed directly through your Android device system settings.
+                      Used to display updates and important academic alerts directly inside the application.
                     </p>
                   </div>
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
