@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   PlayCircle, BookOpen, FileText, Layers, ClipboardCheck, LineChart,
@@ -26,14 +26,14 @@ const NAV = [
 
 const FEATURES = [
   { icon: PlayCircle, title: "Expert Video Lectures", desc: "Concept-clear lessons from top educators, structured chapter by chapter." },
-  { icon: BookOpen, title: "Digital Notes & E-books", desc: "Downloadable notes designed by exam toppers and subject experts." },
+  { icon: BookOpen, title: "Digital Notes & E-books", desc: "Downloadable notes designed by subject experts." },
   { icon: FileText, title: "Previous Year Papers", desc: "Solve last 10+ years of board and entrance exam question papers." },
   { icon: Layers, title: "Chapter-wise Learning", desc: "Learn in the exact order of your syllabus with clear milestones." },
-  { icon: ClipboardCheck, title: "Mock Tests & Practice", desc: "Timed mocks and topic-wise quizzes that mirror the real exam." },
+  { icon: ClipboardCheck, title: "Chapter-wise Practice", desc: "Topic-wise quizzes and exercises to reinforce every concept." },
   { icon: LineChart, title: "Progress Tracking", desc: "Real-time analytics on accuracy, speed and topic mastery." },
   { icon: Sparkles, title: "Personalized Learning", desc: "Smart recommendations based on your strengths and gaps." },
   { icon: RefreshCw, title: "Regular Content Updates", desc: "Fresh questions, new lectures and pattern updates every month." },
-  { icon: ShieldCheck, title: "Secure Premium Content", desc: "DRM-protected videos and notes — your account, your device." },
+  { icon: ShieldCheck, title: "Secure Premium Content", desc: "Authenticated and encrypted video access — your account, your device." },
   { icon: Smartphone, title: "Learn Anytime, Anywhere", desc: "Fully offline-capable — study on the bus, in class or at home." },
 ];
 
@@ -49,7 +49,7 @@ const WHY = [
 ];
 
 const STEPS = [
-  { n: "01", title: "Download the App", desc: "Install PakkaPass from the Play Store or App Store — free to start." },
+  { n: "01", title: "Download the App", desc: "Install PakkaPass from Google Play Store — free to start." },
   { n: "02", title: "Create an Account", desc: "Sign up in seconds with your mobile number or email." },
   { n: "03", title: "Choose Grade & Subjects", desc: "Pick your class and the subjects you want to master." },
   { n: "04", title: "Learn & Track Progress", desc: "Watch, practice, test — and see yourself improve every week." },
@@ -73,16 +73,16 @@ const BENEFITS = [
 const TESTIMONIALS = [
   { name: "Aarav Sharma", role: "Class 12 • CBSE", quote: "PakkaPass made physics feel simple. The video lectures and PYQs together got me 94% in boards." },
   { name: "Priya Nair", role: "Parent of Class 10 student", quote: "As a parent, I love the progress reports. I can see exactly where my child needs help." },
-  { name: "Rohan Verma", role: "Class 11 • JEE aspirant", quote: "Mock tests here match the real pattern. My accuracy improved by 22% in just two months." },
+  { name: "Rohan Verma", role: "Class 11 • JEE aspirant", quote: "The previous year papers and notes made revision so simple. My accuracy improved by 22% in just two months." },
 ];
 
 const FAQS = [
-  { q: "What is PakkaPass?", a: "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. It combines expert video lectures, structured notes, previous year papers, mock tests and progress tracking in a single, easy-to-use platform." },
+  { q: "What is PakkaPass?", a: "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. It combines expert video lectures, structured notes, previous year papers and progress tracking in a single, easy-to-use platform." },
   { q: "Which classes are supported?", a: "PakkaPass currently supports Class 10, Class 11 and Class 12 across CBSE, ICSE and major state boards, along with popular entrance exams." },
-  { q: "Can I study on mobile?", a: "Yes — PakkaPass is built mobile-first. You can watch lectures, download notes and take tests from any Android or iOS device." },
-  { q: "Are study materials updated regularly?", a: "Absolutely. Our academic team updates content, questions and mock tests to match the latest syllabus and exam patterns." },
+  { q: "Can I study on mobile?", a: "Yes — PakkaPass is built mobile-first. You can watch lectures, download notes and take tests on Android devices directly from Google Play Store." },
+  { q: "Are study materials updated regularly?", a: "Absolutely. Our academic team updates content, questions and previous year papers to match the latest syllabus and exam patterns." },
   { q: "Is the content available anytime?", a: "Yes. Once subscribed, you get 24×7 access, including offline downloads for lectures and notes." },
-  { q: "How do I subscribe?", a: "Download the app, choose your grade and pick a plan that suits you. Multiple affordable options are available." },
+  { q: "How do I subscribe?", a: "Download the app from Google Play Store, choose your grade and pick a plan that suits you. Multiple affordable options are available." },
 ];
 
 function Landing() {
@@ -162,7 +162,7 @@ function Hero() {
             Your complete <span className="text-gradient-brand">learning companion</span> for board & entrance exams.
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-            Expert video lectures, digital notes, previous year papers, mock tests and real-time progress tracking — everything you need to study smarter, all in one app.
+            Expert video lectures, digital notes, previous year papers and real-time progress tracking — everything you need to study smarter, all in one app.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a href="#download" className="inline-flex items-center gap-2 rounded-full bg-gradient-cta px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-elev transition-transform hover:scale-[1.02]">
@@ -205,7 +205,7 @@ function TrustBar() {
     { k: "50K+", v: "Active students" },
     { k: "1,200+", v: "Video lectures" },
     { k: "25K+", v: "Practice questions" },
-    { k: "4.8★", v: "App store rating" },
+    { k: "4.8★", v: "Play Store rating" },
   ];
   return (
     <section className="border-y border-border bg-white">
@@ -317,7 +317,7 @@ function WhyChoose() {
           <div className="grid grid-cols-2 gap-4">
             <div className="mt-8 space-y-4">
               <StatCard label="Concept mastery" value="+38%" tone="blue" />
-              <StatCard label="Mock accuracy" value="+22%" tone="purple" />
+              <StatCard label="Practice accuracy" value="+22%" tone="purple" />
             </div>
             <div className="space-y-4">
               <StatCard label="Avg study streak" value="41 days" tone="purple" />
@@ -374,7 +374,7 @@ function Courses() {
         <SectionHeader
           eyebrow="Courses"
           title={<>Comprehensive courses for <span className="text-gradient-brand">every grade</span></>}
-          desc="Every course includes video classes, notes, chapter-wise practice, mock tests and previous year question papers."
+          desc="Every course includes video classes, digital notes, chapter-wise practice, and previous year question papers."
         />
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {COURSES.map((c) => (
@@ -386,7 +386,7 @@ function Courses() {
               <h3 className="mt-4 text-3xl font-extrabold">{c.grade}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{c.subjects}</p>
               <ul className="mt-6 space-y-2 text-sm">
-                {["Video classes", "Structured notes", "Practice tests", "Previous year papers"].map((x) => (
+                {["Video classes", "Digital notes", "Chapter practice", "Previous year papers"].map((x) => (
                   <li key={x} className="flex items-center gap-2">
                     <Check className="h-4 w-4 text-brand-green" /> {x}
                   </li>
@@ -533,17 +533,19 @@ function DownloadCTA() {
           <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
             <div>
               <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold backdrop-blur">
-                <Sparkles className="h-3.5 w-3.5" /> Start free — subscribe when you're ready
+                <Sparkles className="h-3.5 w-3.5" /> Exclusively on Google Play — Free to start
               </span>
               <h2 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
                 Download PakkaPass and start scoring higher.
               </h2>
               <p className="mt-4 max-w-lg text-white/85 md:text-lg">
-                Join thousands of Class 10, 11 and 12 students already learning smarter with PakkaPass.
+                Join thousands of Class 10, 11 and 12 students already learning smarter with PakkaPass on Android.
               </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <StoreBadge store="play" />
-                <StoreBadge store="apple" />
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <StoreBadge />
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-white/80 bg-white/10 px-3.5 py-2 rounded-xl backdrop-blur-xs">
+                  <Smartphone className="h-4 w-4" /> Built for Android phones & tablets
+                </span>
               </div>
             </div>
             <div className="relative hidden justify-center lg:flex">
@@ -558,37 +560,22 @@ function DownloadCTA() {
   );
 }
 
-function StoreBadge({ store }: { store: "play" | "apple" }) {
-  const label = store === "play" ? "Google Play" : "App Store";
-  const sub = store === "play" ? "GET IT ON" : "Download on the";
-
-  const href =
-    store === "play"
-      ? "https://play.google.com/store"
-      : "https://apps.apple.com/";
-
+function StoreBadge() {
   return (
     <a
-      href={href}
+      href="https://play.google.com/store/search?q=pakkapass&c=apps"
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-3 rounded-2xl bg-black/85 px-5 py-3 text-left text-white transition-transform hover:scale-[1.03]"
+      className="inline-flex items-center gap-3 rounded-2xl bg-black/90 px-6 py-3.5 text-left text-white shadow-elev transition-transform hover:scale-[1.04]"
     >
-      {store === "play" ? (
-        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor">
-          <path d="M3.6 2.3c-.4.2-.6.6-.6 1.1v17.2c0 .5.2.9.6 1.1l10-9.7-10-9.7zM14.6 12l2.9-2.8-11-6.3c-.2-.1-.4-.1-.6 0L14.6 12zm0 0l-8.7 8.7c.2.1.4.1.6 0l11-6.3-2.9-2.4zM20.8 10.6l-2.4-1.4-3 2.8 3 2.4 2.4-1.4c.8-.5.8-1.9 0-2.4z" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" className="h-7 w-7" fill="currentColor">
-          <path d="M16.5 12.7c0-2.5 2-3.7 2.1-3.8-1.2-1.7-3-2-3.7-2-1.6-.2-3 .9-3.8.9-.8 0-2-.9-3.3-.9-1.7 0-3.3 1-4.2 2.5-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.3.8 1.4 0 2.2-1.2 3.1-2.5.7-1 1.2-2.1 1.5-3.2-2.4-.9-2.8-4-2.8-3.8zM14 4.9c.7-.9 1.2-2.1 1.1-3.4-1 .1-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.2 1.1.1 2.3-.6 3-1.4z" />
-        </svg>
-      )}
-
+      <svg viewBox="0 0 24 24" className="h-8 w-8 text-white" fill="currentColor">
+        <path d="M3.6 2.3c-.4.2-.6.6-.6 1.1v17.2c0 .5.2.9.6 1.1l10-9.7-10-9.7zM14.6 12l2.9-2.8-11-6.3c-.2-.1-.4-.1-.6 0L14.6 12zm0 0l-8.7 8.7c.2.1.4.1.6 0l11-6.3-2.9-2.4zM20.8 10.6l-2.4-1.4-3 2.8 3 2.4 2.4-1.4c.8-.5.8-1.9 0-2.4z" />
+      </svg>
       <div>
         <div className="text-[10px] uppercase tracking-wider opacity-80">
-          {sub}
+          GET IT ON
         </div>
-        <div className="text-sm font-semibold leading-none">{label}</div>
+        <div className="text-base font-bold leading-tight">Google Play</div>
       </div>
     </a>
   );
@@ -596,8 +583,24 @@ function StoreBadge({ store }: { store: "play" | "apple" }) {
 
 function Footer() {
   const cols = [
-    { title: "Product", links: ["About", "Features", "Courses", "FAQs"] },
-    { title: "Legal", links: ["Privacy Policy", "Terms & Conditions", "Refund Policy", "Cookie Policy"] },
+    {
+      title: "Product",
+      links: [
+        { label: "About", href: "#about" },
+        { label: "Features", href: "#features" },
+        { label: "Courses", href: "#courses" },
+        { label: "FAQs", href: "#faq" },
+      ],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Privacy Policy", to: "/privacy" },
+        { label: "Terms & Conditions", href: "#" },
+        { label: "Refund Policy", href: "#" },
+        { label: "Cookie Policy", href: "#" },
+      ],
+    },
   ];
   return (
     <footer className="border-t border-border bg-white">
@@ -621,8 +624,16 @@ function Footer() {
               <h4 className="text-sm font-bold">{c.title}</h4>
               <ul className="mt-4 space-y-2.5">
                 {c.links.map((l) => (
-                  <li key={l}>
-                    <a href="#" className="text-sm text-muted-foreground transition-colors hover:text-foreground">{l}</a>
+                  <li key={l.label}>
+                    {l.to ? (
+                      <Link to={l.to} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {l.label}
+                      </Link>
+                    ) : (
+                      <a href={l.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+                        {l.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -630,8 +641,7 @@ function Footer() {
           ))}
         </div>
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
-          <p>© {new Date().getFullYear()} PakkaPass™ — an exam-centric App. All rights reserved.</p>
-          
+          <p>© {new Date().getFullYear()} PakkaPass™ — by <a href="https://www.pratitieduskills.com/" target="_blank" rel="noopener noreferrer" className="font-medium text-foreground hover:text-brand-purple underline">Pratiti Eduskills Private Limited</a>. All rights reserved.</p>
         </div>
       </div>
     </footer>

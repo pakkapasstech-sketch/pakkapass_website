@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. Access expert video lectures, digital notes, previous year papers, mock tests and progress tracking in one place.",
+          "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. Access expert video lectures, digital notes, previous year papers and progress tracking in one place.",
       },
       { name: "author", content: "PakkaPass" },
       { property: "og:title", content: "PakkaPass — an exam-centric App" },
       {
         property: "og:description",
         content:
-          "Expert video lectures, notes, previous year papers, mock tests and progress tracking for Class 10, 11 and 12 students.",
+          "Expert video lectures, notes, previous year papers and progress tracking for Class 10, 11 and 12 students.",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "PakkaPass" },
@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Learn smarter for board and entrance exams with PakkaPass. Video lectures, notes, PYQs, mock tests and analytics for Class 10–12.",
+          "Learn smarter for board and entrance exams with PakkaPass. Video lectures, notes, PYQs and analytics for Class 10–12.",
       },
     ],
     links: [
