@@ -388,7 +388,7 @@ export function PrivacyPolicy() {
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">Registered Address</span>
-                  <span className="text-sm font-semibold text-slate-900 mt-1 block">Pratiti Eduskills Private Limited, Hyderabad, Telangana, India</span>
+                  <span className="text-sm font-semibold text-slate-900 mt-1 block">11-5-439, 2nd Floor, Lakdikapul, Hari Nagar, Red Hills, Hyderabad, Telangana – 500004</span>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">Email</span>
@@ -1080,7 +1080,7 @@ export function PrivacyPolicy() {
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">Registered Address</span>
-                  <span className="text-sm font-semibold text-slate-900 mt-1 block">Pratiti Eduskills Private Limited, Hyderabad, Telangana, India</span>
+                  <span className="text-sm font-semibold text-slate-900 mt-1 block">11-5-439, 2nd Floor, Lakdikapul, Hari Nagar, Red Hills, Hyderabad, Telangana – 500004</span>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-500 block">Support</span>
