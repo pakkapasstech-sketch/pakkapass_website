@@ -21,7 +21,6 @@ import {
   CheckCircle2,
   ArrowRight,
   ChevronRight,
-  ExternalLink,
   Download,
   Menu,
   X,
@@ -29,6 +28,8 @@ import {
   GraduationCap,
   Scale,
   Users,
+  Globe,
+  ExternalLink,
 } from "lucide-react";
 import logo from "@/assets/sidebarlogo.png";
 
@@ -42,23 +43,30 @@ interface SectionItem {
 const PLAY_STORE_URL = "https://play.google.com/store/search?q=pakkapass&c=apps";
 
 const SECTIONS: SectionItem[] = [
-  { id: "who-we-are", number: "1", title: "Who Is Responsible for Your Data", icon: Building },
-  { id: "what-data-we-get", number: "2", title: "What Data We Get", icon: FileText },
-  { id: "how-we-get-data", number: "3", title: "How We Get Data About You", icon: Eye },
-  { id: "how-we-use-data", number: "4", title: "What We Use Your Data For", icon: BookOpen },
-  { id: "authentication-otp", number: "5", title: "OTP & Account Authentication", icon: Lock },
-  { id: "media-permissions", number: "6", title: "Profile Photos & Device Permissions", icon: Smartphone },
+  { id: "who-is-responsible", number: "1", title: "Who Is Responsible for Your Data?", icon: Building },
+  { id: "information-we-collect", number: "2", title: "Information We Collect", icon: FileText },
+  { id: "information-collected-automatically", number: "3", title: "Information Collected Automatically", icon: Eye },
+  { id: "otp-account-authentication", number: "4", title: "OTP & Account Authentication", icon: Lock },
+  { id: "profile-photographs-camera", number: "5", title: "Profile Photos & Camera Access", icon: Smartphone },
+  { id: "how-we-use-information", number: "6", title: "How We Use Your Information", icon: BookOpen },
   { id: "student-child-privacy", number: "7", title: "Student & Child Privacy", icon: GraduationCap },
-  { id: "data-sharing", number: "8", title: "Who We Share Your Data With", icon: Users },
-  { id: "third-party-services", number: "9", title: "Third-Party Services (AWS, S3, Communications)", icon: Server },
-  { id: "payment-processing", number: "10", title: "Payment Processing & Billing (Razorpay)", icon: CreditCard },
-  { id: "data-security", number: "11", title: "Data Storage & Security Measures", icon: ShieldCheck },
-  { id: "data-retention", number: "12", title: "Data Retention & Storage Limits", icon: FileText },
-  { id: "privacy-rights", number: "13", title: "Your Privacy Rights & Choices", icon: UserCheck },
-  { id: "account-deletion", number: "14", title: "Account Deletion Process", icon: Trash2 },
-  { id: "cookies-tracking", number: "15", title: "Cookies & Tracking Technologies", icon: Bell },
-  { id: "governing-law", number: "16", title: "Governing Law & Legal Jurisdiction", icon: Scale },
-  { id: "contact-grievance", number: "17", title: "Contact & Grievance Redressal", icon: Mail },
+  { id: "information-sharing-disclosure", number: "8", title: "Information Sharing & Disclosure", icon: Users },
+  { id: "third-party-services", number: "9", title: "Third-Party Services", icon: Server },
+  { id: "payment-information", number: "10", title: "Payment Information & Billing", icon: CreditCard },
+  { id: "data-storage-security", number: "11", title: "Data Storage & Security Measures", icon: ShieldCheck },
+  { id: "personal-data-breach", number: "12", title: "Personal Data Breach Protocol", icon: Shield },
+  { id: "data-retention", number: "13", title: "Data Retention & Storage Limits", icon: FileText },
+  { id: "your-privacy-rights", number: "14", title: "Your Privacy Rights & Choices", icon: UserCheck },
+  { id: "account-deletion", number: "15", title: "Account Deletion Process", icon: Trash2 },
+  { id: "app-permissions", number: "16", title: "Mobile App Permissions", icon: Smartphone },
+  { id: "child-safety-advertising", number: "17", title: "Child Safety & Zero Advertising", icon: ShieldCheck },
+  { id: "third-party-links", number: "18", title: "Third-Party Links & Services", icon: ExternalLink },
+  { id: "user-generated-content", number: "19", title: "User-Generated Content", icon: FileText },
+  { id: "ai-automated-processing", number: "20", title: "AI & Automated Processing", icon: Sparkles },
+  { id: "cross-border-transfers", number: "21", title: "Cross-Border Data Transfers", icon: Globe },
+  { id: "contact-grievance-redressal", number: "22", title: "Contact & Grievance Redressal", icon: Mail },
+  { id: "changes-to-policy", number: "23", title: "Changes to This Privacy Policy", icon: FileText },
+  { id: "governing-law", number: "24", title: "Governing Law & Legal Jurisdiction", icon: Scale },
 ];
 
 const HIGHLIGHTS = [
@@ -78,7 +86,7 @@ const HIGHLIGHTS = [
     icon: Lock,
     title: "Enterprise Grade Security",
     description:
-      "Your account and learning activity are protected via TLS/HTTPS encryption, authenticated sessions, and secure AWS infrastructure.",
+      "Your account and learning activity are protected via TLS/HTTPS encryption, authenticated sessions, and secure AWS cloud infrastructure.",
   },
   {
     icon: CreditCard,
@@ -90,18 +98,23 @@ const HIGHLIGHTS = [
     icon: UserCheck,
     title: "Data Rights & Access",
     description:
-      "You can request access, correction, withdrawal of consent where applicable, and deletion of your personal data, subject to applicable legal and regulatory requirements.",
+      "You can request access, correction, withdrawal of consent where applicable, and deletion of your personal data under the DPDP Act, 2023.",
   },
 ];
 
 export function PrivacyPolicy() {
-  const [activeSection, setActiveSection] = useState<string>("who-we-are");
+  const [activeSection, setActiveSection] = useState<string>("who-is-responsible");
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentProgress = totalScroll > 0 ? (window.scrollY / totalScroll) * 100 : 0;
+      setScrollProgress(currentProgress);
+
       const scrollPosition = window.scrollY + 200;
       for (const section of SECTIONS) {
         const element = document.getElementById(section.id);
@@ -158,9 +171,14 @@ export function PrivacyPolicy() {
   }, [searchQuery]);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 text-foreground antialiased">
+    <div className="min-h-screen bg-slate-50/50 text-foreground antialiased selection:bg-brand-purple/10 selection:text-brand-purple">
       {/* Top Header */}
       <header className="sticky top-0 z-50 border-b border-border/80 bg-white/95 backdrop-blur-md shadow-xs">
+        {/* Scroll Progress Bar */}
+        <div
+          className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-brand-purple via-indigo-600 to-brand-blue transition-all duration-150 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <Link to="/" className="flex items-center gap-2">
@@ -227,7 +245,7 @@ export function PrivacyPolicy() {
         )}
       </header>
 
-      {/* Hero Banner with Udemy Style Layout */}
+      {/* Hero Banner with Modern Legal Layout */}
       <section className="border-b border-border bg-gradient-to-b from-white via-brand-purple/5 to-slate-50/50 py-10 md:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
@@ -250,15 +268,18 @@ export function PrivacyPolicy() {
                 PakkaPass Privacy Policy
               </h1>
               <p className="mt-3 text-base text-muted-foreground md:text-lg leading-relaxed">
-                We take student privacy and trust seriously. This Privacy Policy details the information we collect,
-                how it is processed to power your educational journey, and how you maintain control over your personal data.
+                PakkaPass is dedicated to empowering students with syllabus-aligned video lectures, digital study notes,
+                practice materials, and academic progress tracking while protecting student privacy under Indian law.
               </p>
               <div className="mt-4 flex flex-wrap items-center gap-3 text-xs font-medium text-slate-500">
                 <span className="inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 border border-border">
                   <strong>Effective Date:</strong> September 2026
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 border border-border">
-                  <strong>Last Updated:</strong> September 2026
+                  <strong>Last Updated:</strong> 15th September 2026
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-white px-2.5 py-1 border border-border">
+                  <strong>Governing Law:</strong> DPDP Act, 2023 (India)
                 </span>
               </div>
             </div>
@@ -282,7 +303,7 @@ export function PrivacyPolicy() {
             </div>
           </div>
 
-          {/* Key Highlights Summary Box (Udemy Style "Privacy Highlights") */}
+          {/* Key Highlights Summary Box */}
           <div className="mt-8 rounded-2xl border border-border bg-white p-6 shadow-sm">
             <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
               <Sparkles className="h-4 w-4 text-brand-purple" />
@@ -333,31 +354,36 @@ export function PrivacyPolicy() {
               </div>
 
               {/* Table of Contents Container */}
-              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-xs">
-                <div className="px-3 py-2 text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Table of Contents
+              <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white p-2.5 shadow-xs">
+                <div className="flex items-center justify-between px-3 py-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                    Table of Contents
+                  </span>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                    {SECTIONS.length} Sections
+                  </span>
                 </div>
-                <nav className="max-h-[calc(100vh-280px)] space-y-1 overflow-y-auto pr-1 text-xs">
+                <nav className="max-h-[calc(100vh-290px)] space-y-0.5 overflow-y-auto pr-1 text-xs">
                   {filteredSections.map((sec) => {
                     const isActive = activeSection === sec.id;
                     return (
                       <button
                         key={sec.id}
                         onClick={() => scrollToSection(sec.id)}
-                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left font-medium transition-all cursor-pointer ${
+                        className={`flex w-full items-center gap-2.5 rounded-lg border-l-[3px] px-3 py-2 text-left transition-all cursor-pointer ${
                           isActive
-                            ? "bg-brand-purple text-white shadow-xs"
-                            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                            ? "border-brand-purple bg-brand-purple/[0.07] font-semibold text-brand-purple shadow-2xs"
+                            : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                         }`}
                       >
                         <span
-                          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded text-[10px] font-bold ${
-                            isActive ? "bg-white/20 text-white" : "bg-slate-100 text-slate-500"
+                          className={`text-[11px] font-bold ${
+                            isActive ? "text-brand-purple" : "text-slate-400"
                           }`}
                         >
-                          {sec.number}
+                          {sec.number.padStart(2, "0")}.
                         </span>
-                        <span className="truncate">{sec.title}</span>
+                        <span className="truncate leading-tight">{sec.title}</span>
                       </button>
                     );
                   })}
@@ -369,13 +395,13 @@ export function PrivacyPolicy() {
                 </nav>
 
                 {/* Grievance Redressal Quick CTA */}
-                <div className="mt-3 border-t border-slate-100 pt-3">
+                <div className="mt-2.5 border-t border-slate-100 pt-2.5">
                   <button
-                    onClick={() => scrollToSection("contact-grievance")}
-                    className="flex w-full items-center justify-between rounded-xl bg-slate-50 p-2.5 text-xs font-semibold text-brand-purple hover:bg-brand-purple/5 transition-colors cursor-pointer"
+                    onClick={() => scrollToSection("contact-grievance-redressal")}
+                    className="flex w-full items-center justify-between rounded-xl bg-slate-50/80 p-2.5 text-xs font-semibold text-brand-purple hover:bg-brand-purple/5 transition-colors cursor-pointer"
                   >
                     <span className="flex items-center gap-1.5">
-                      <Mail className="h-3.5 w-3.5" /> Need privacy assistance?
+                      <Mail className="h-3.5 w-3.5" /> Privacy & Support Desk
                     </span>
                     <ArrowRight className="h-3.5 w-3.5" />
                   </button>
@@ -391,29 +417,38 @@ export function PrivacyPolicy() {
               <h2 className="text-xl font-bold text-slate-900">About PakkaPass & This Policy</h2>
               <p className="mt-3 text-sm leading-relaxed">
                 PakkaPass (<strong>"PakkaPass"</strong>, <strong>"we"</strong>, <strong>"us"</strong>, or{" "}
-                <strong>"our"</strong>) operates the PakkaPass educational learning platform, mobile application
-                (available on Google Play Store for Android), website (<Link to="/" className="text-brand-purple underline">https://pakkapass.com</Link>),
-                and associated online educational services (collectively, the <strong>"Services"</strong>).
+                <strong>"our"</strong>) is an educational learning platform that provides students with access to educational
+                content, video lectures, notes, practice materials, academic progress tracking, subscriptions, and related services
+                through our mobile application, website (<Link to="/" className="text-brand-purple underline">https://pakkapass.com</Link>),
+                and associated services (collectively, the <strong>"Services"</strong>).
               </p>
               <p className="mt-3 text-sm leading-relaxed">
-                PakkaPass is dedicated to empowering students of Class 10, 11, and 12 with high-quality, exam-centric video lectures, digital notes, previous year question papers (PYQs), and real-time academic progress analytics.
+                By registering for or using PakkaPass, you acknowledge that you have read and understood this Privacy Policy.
+                This Privacy Policy is intended to be read together with the Terms of Use and any other applicable terms governing
+                your use of the Services.
               </p>
               <p className="mt-3 text-sm leading-relaxed">
-                This Privacy Policy explains how PakkaPass collects, uses, shares, retains and protects personal data. Where consent is required by applicable law, PakkaPass will obtain consent through an appropriate consent mechanism.
+                PakkaPass processes personal data in accordance with applicable laws of India, including, to the extent applicable
+                and from the date on which the relevant provisions become effective, the Digital Personal Data Protection Act, 2023 (
+                <strong>"DPDP Act"</strong>) and the Digital Personal Data Protection Rules, 2025 (<strong>"DPDP Rules"</strong>),
+                as amended or replaced from time to time. Where consent is required under applicable law, PakkaPass will obtain
+                such consent in the manner prescribed by applicable law.
               </p>
             </div>
 
             {/* Section 1 */}
-            <section id="who-we-are" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="who-is-responsible" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   1
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Who Is Responsible for Your Data?</h3>
+                <h3 className="text-xl font-bold text-slate-900">1. Who Is Responsible for Your Data?</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  PakkaPass is owned and operated by <strong>Pratiti Eduskills Private Limited</strong> (<a href="https://www.pratitieduskills.com/" target="_blank" rel="noopener noreferrer" className="text-brand-purple underline">pratitieduskills.com</a>), acting as the <strong>Data Fiduciary / Data Controller</strong> under the Digital Personal Data Protection Act, 2023 (DPDP Act) and the Information Technology Act, 2000 of India.
+                  PakkaPass is owned and operated by <strong>Pratiti Eduskills Private Limited</strong>, acting as the{" "}
+                  <strong>Data Fiduciary / Data Controller</strong> under the Digital Personal Data Protection Act, 2023 (DPDP Act)
+                  and the Information Technology Act, 2000 of India.
                 </p>
                 <div className="grid gap-3 sm:grid-cols-2 rounded-xl bg-slate-50 p-4 border border-slate-200/80">
                   <div>
@@ -438,278 +473,151 @@ export function PrivacyPolicy() {
                       <a href="mailto:support@pakkapass.in" className="hover:underline">support@pakkapass.in</a>
                     </div>
                   </div>
+                  <div>
+                    <div className="text-xs font-medium text-slate-500 uppercase tracking-wider">Grievance & Privacy Officer</div>
+                    <div className="font-semibold text-slate-900 mt-0.5">
+                      Grievance Officer, Pratiti Eduskills Private Limited
+                    </div>
+                  </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  For privacy queries, parental consent inquiries, or data rights requests, you can contact us directly at <a href="mailto:support@pakkapass.in" className="text-brand-purple font-semibold underline">support@pakkapass.in</a> or refer to our Grievance Officer details in <button onClick={() => scrollToSection("contact-grievance")} className="text-brand-purple underline cursor-pointer">Section 17</button>.
+                  For privacy-related questions, requests, or complaints, please contact us at <a href="mailto:support@pakkapass.in" className="text-brand-purple font-semibold underline">support@pakkapass.in</a> or refer to our Grievance Officer details in <button onClick={() => scrollToSection("contact-grievance-redressal")} className="text-brand-purple underline cursor-pointer">Section 22</button>.
                 </p>
               </div>
             </section>
 
             {/* Section 2 */}
-            <section id="what-data-we-get" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="information-we-collect" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   2
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">What Data We Get</h3>
+                <h3 className="text-xl font-bold text-slate-900">2. Information We Collect</h3>
               </div>
               <div className="mt-5 space-y-6 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  We collect only the minimum information necessary to deliver high-quality educational content, personalize your study plan, maintain security, and process subscriptions.
+                  We collect only the information reasonably necessary to provide, maintain, secure, and improve our Services.
                 </p>
 
-                {/* Structured Data Category Table */}
-                <div className="overflow-x-auto rounded-xl border border-slate-200">
-                  <table className="w-full text-left text-xs sm:text-sm">
-                    <thead className="bg-slate-50 text-slate-700 font-semibold border-b border-slate-200">
-                      <tr>
-                        <th className="p-3 sm:p-4">Category</th>
-                        <th className="p-3 sm:p-4">Specific Data Elements</th>
-                        <th className="p-3 sm:p-4">Primary Purpose</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      <tr className="hover:bg-slate-50/50">
-                        <td className="p-3 sm:p-4 font-semibold text-slate-900 align-top">
-                          Account Information
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Full name, email address, mobile phone number, optional profile photograph, authentication tokens.
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          User registration, OTP login, profile customization, customer support, and account security.
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-slate-50/50">
-                        <td className="p-3 sm:p-4 font-semibold text-slate-900 align-top">
-                          Academic Profile
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Education Board (CBSE, ICSE, State Boards), Class/Grade (10, 11, 12), Academic stream/branch (MPC, BiPC, CEC, AEC), School/College name, City, District, and State.
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Customizing syllabus-aligned video lectures, targeted notes, and board-specific question sets.
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-slate-50/50">
-                        <td className="p-3 sm:p-4 font-semibold text-slate-900 align-top">
-                          Learning & Progress Data
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Subjects & topics studied, video watch timestamps, chapters completed, study streak counts, practice quiz answers, previous year question activity, time spent per concept, ratings/feedback.
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Delivering performance analytics, accuracy insights, and study streak badges.
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-slate-50/50">
-                        <td className="p-3 sm:p-4 font-semibold text-slate-900 align-top">
-                          Parent / Guardian Data
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Parent/guardian name, parent mobile number, parent email address, student linkage relationship.
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Facilitating parental consent, sending weekly progress summaries, and billing/subscription updates.
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-slate-50/50">
-                        <td className="p-3 sm:p-4 font-semibold text-slate-900 align-top">
-                          Technical & Device Data
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Device model, manufacturer, OS version, IP address, network carrier, session identifiers.
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Preventing multi-device credential misuse and ensuring reliable video streaming delivery.
-                        </td>
-                      </tr>
-                      <tr className="hover:bg-slate-50/50">
-                        <td className="p-3 sm:p-4 font-semibold text-slate-900 align-top">
-                          Transaction Data
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Payment Gateway Transaction ID (Razorpay), subscription plan tier, purchase timestamp, amount paid, discount coupon codes, payment mode (UPI/Card/NetBanking).
-                        </td>
-                        <td className="p-3 sm:p-4 text-slate-600 align-top">
-                          Granting paid course access, generating GST-compliant tax invoices, managing subscription renewals.
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <h4 className="font-bold text-slate-900 text-base">2.1 Information You Provide</h4>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                    <strong className="text-slate-900 block text-xs uppercase tracking-wider">Account Information</strong>
+                    <p className="mt-1.5 text-xs text-slate-600">Full name, email address, mobile phone number, optional profile photograph, authentication tokens.</p>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                    <strong className="text-slate-900 block text-xs uppercase tracking-wider">Academic Information</strong>
+                    <p className="mt-1.5 text-xs text-slate-600">Education board (CBSE, ICSE, State Boards), Class/grade (10, 11, 12), Academic year, Branch/stream (MPC, BiPC, CEC, AEC), School/college name, State, District, City.</p>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                    <strong className="text-slate-900 block text-xs uppercase tracking-wider">Parent or Guardian Information</strong>
+                    <p className="mt-1.5 text-xs text-slate-600">Parent/guardian name, mobile number, email address, and student relationship linkage.</p>
+                  </div>
+                  <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-4">
+                    <strong className="text-slate-900 block text-xs uppercase tracking-wider">Learning Information</strong>
+                    <p className="mt-1.5 text-xs text-slate-600">Subjects studied, chapters completed, study duration, study sessions, streaks, practice activity, video interaction, content ratings, supplementary subscriptions.</p>
+                  </div>
                 </div>
 
-                <div className="rounded-xl border border-amber-200 bg-amber-50/60 p-4 text-amber-900 text-xs sm:text-sm">
-                  <strong>Important Note on Sensitive Payment Data:</strong> PakkaPass does <strong>NOT</strong> collect or store full credit/debit card numbers, CVV codes, or UPI PINs on our servers. All sensitive financial transactions are securely tokenized and handled directly through PCI-DSS Level 1 compliant payment aggregator Razorpay Payments Private Limited.
+                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                  <h4 className="font-semibold text-slate-900">2.2 Lawful Basis for Processing</h4>
+                  <p className="mt-1 text-xs text-slate-600">
+                    PakkaPass processes personal data only for lawful purposes and to the extent necessary: with user/parental consent; where voluntarily provided for a specified purpose; for providing and administering the Services; processing subscriptions and payments; complying with tax, legal, and regulatory obligations; preventing fraud and unauthorized access; and responding to lawful legal processes.
+                  </p>
                 </div>
               </div>
             </section>
 
             {/* Section 3 */}
-            <section id="how-we-get-data" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="information-collected-automatically" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   3
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">How We Get Data About You</h3>
+                <h3 className="text-xl font-bold text-slate-900">3. Information Collected Automatically</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>We use different methods to collect data from and about you, including:</p>
-                <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-                    <div className="font-semibold text-slate-900">1. Direct Interactions</div>
-                    <p className="mt-1.5 text-xs text-muted-foreground">
-                      You directly give us information when creating an account, selecting your grade/board, uploading a profile picture, solving previous year papers, or contacting customer support.
-                    </p>
+                <p>When you use PakkaPass, certain technical and usage information may be collected automatically, including:</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong>Device & Network:</strong> Device manufacturer, model, operating system and version, IP address, network details.
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-                    <div className="font-semibold text-slate-900">2. Automated Technologies</div>
-                    <p className="mt-1.5 text-xs text-muted-foreground">
-                      As you navigate the app or website, our systems automatically collect technical data regarding video streaming performance and device parameters.
-                    </p>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong>Session & Diagnostic:</strong> Application session info, timestamps of activity, error diagnostic logs, security audit logs, notification status.
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-slate-50/50 p-4">
-                    <div className="font-semibold text-slate-900">3. Educational Partners</div>
-                    <p className="mt-1.5 text-xs text-muted-foreground">
-                      If your school, coaching institute, or academic sponsor provides you access to PakkaPass, we may receive basic batch enrollment details from your institution.
-                    </p>
-                  </div>
+                </div>
+                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200">
+                  <h4 className="font-semibold text-slate-900">3.1 Cookies, SDKs & Analytics Technologies</h4>
+                  <p className="mt-1 text-xs text-slate-600">
+                    PakkaPass and its authorized service providers may use essential tokens, SDKs, and local storage to maintain sessions, remember preferences, and improve platform reliability. <strong>PakkaPass does not use children's personal data for targeted behavioural advertising.</strong>
+                  </p>
                 </div>
               </div>
             </section>
 
             {/* Section 4 */}
-            <section id="how-we-use-data" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="otp-account-authentication" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   4
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">What We Use Your Data For</h3>
-              </div>
-              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>We process your personal information based on legitimate, lawful grounds:</p>
-                <ul className="space-y-3">
-                  <li className="flex items-start gap-3">
-                    <div className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Delivering Educational Content:</strong> Providing streaming lectures, downloadable notes, previous year question solutions, and subject modules tailored to your syllabus.
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Progress Tracking & Exam Analytics:</strong> Computing study streaks, subject accuracy rates, time management analytics, and personalized chapter revision reminders.
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Parental Progress Sharing:</strong> Enabling parents or guardians to review the student's study activity, chapter completion progress, and subscription status when accounts are linked.
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Subscription & Order Fulfillment:</strong> Processing plan upgrades, managing active subscriptions, applying coupon codes, and generating GST invoices.
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">System Security & Platform Integrity:</strong> Protecting account access, preventing unauthorized credential sharing, and troubleshooting application issues.
-                    </div>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="mt-1 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald-100 text-emerald-600">
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    </div>
-                    <div>
-                      <strong className="text-slate-900">Essential Service Communications:</strong> Sending OTPs, security alerts, exam date announcements, and resolving customer support tickets.
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </section>
-
-            {/* Section 5 */}
-            <section id="authentication-otp" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
-              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
-                  5
-                </span>
-                <h3 className="text-xl font-bold text-slate-900">OTP & Account Authentication</h3>
+                <h3 className="text-xl font-bold text-slate-900">4. OTP & Account Authentication</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  PakkaPass uses passwordless One-Time Password (OTP) verification sent via SMS or Email for seamless and highly secure account registration and sign-in.
+                  PakkaPass uses One-Time Passwords (OTPs) sent via SMS or Email for passwordless registration and login. We process your phone number or email solely to deliver the OTP, verify identity, complete registration/login, and detect suspicious activity.
                 </p>
-                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200">
-                  <h4 className="font-semibold text-slate-900">How We Handle OTPs:</h4>
-                  <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-slate-600">
-                    <li>OTPs are short-lived authentication tokens (valid for 5 to 10 minutes).</li>
-                    <li>We process your verified mobile phone number or email solely to deliver the OTP and authenticate identity.</li>
-                    <li>OTPs are encrypted in transit and hashed during backend verification.</li>
-                    <li><strong>Important Safety Warning:</strong> Never share your PakkaPass OTP with anyone. Our representatives will never call or message asking for your OTP.</li>
-                  </ul>
+                <div className="rounded-xl bg-amber-50/60 p-4 border border-amber-200 text-amber-900 text-xs">
+                  <strong>Safety Notice:</strong> OTPs are temporary credentials (valid for 5–10 minutes). Never share your OTP with anyone; PakkaPass representatives will never ask for your OTP.
                 </div>
               </div>
             </section>
 
+            {/* Section 5 */}
+            <section id="profile-photographs-camera" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  5
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">5. Profile Photographs & Camera/Photo Access</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  PakkaPass may allow you to upload an optional profile photo. Camera and photo-library permissions are requested only when you choose to use this feature. We do not require you to provide a profile photograph unless a specific feature expressly requires it.
+                </p>
+              </div>
+            </section>
+
             {/* Section 6 */}
-            <section id="media-permissions" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="how-we-use-information" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   6
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Profile Photos & Device Permissions</h3>
+                <h3 className="text-xl font-bold text-slate-900">6. How We Use Your Information</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>
-                  To provide full functionality, the PakkaPass mobile application may request the following device permissions with your explicit approval:
-                </p>
-                <div className="grid gap-4 sm:grid-cols-2">
+                <p>We process personal data for legitimate purposes necessary to operate PakkaPass:</p>
+                <div className="grid gap-3 sm:grid-cols-2">
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="flex items-center gap-2 font-semibold text-slate-900">
-                      <Smartphone className="h-4 w-4 text-brand-purple" /> Photos / Media Storage
-                    </div>
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      Used only when you choose to upload a custom profile picture, save digital study notes locally for offline revision, or upload problem doubt screenshots.
-                    </p>
+                    <strong className="text-slate-900 block text-xs uppercase">Providing Educational Services</strong>
+                    <p className="mt-1 text-xs text-slate-600">Delivering streaming lectures, syllabus notes, practice question sets, and personalized curriculum modules.</p>
                   </div>
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="flex items-center gap-2 font-semibold text-slate-900">
-                      <Eye className="h-4 w-4 text-brand-purple" /> Camera Access
-                    </div>
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      Requested only if you choose to snap a live photo for your student profile badge or scan a physical question for doubt clearing. We never access the camera in the background.
-                    </p>
+                    <strong className="text-slate-900 block text-xs uppercase">Learning Progress Analytics</strong>
+                    <p className="mt-1 text-xs text-slate-600">Tracking chapter milestones, computing study streaks, and generating student progress summaries.</p>
                   </div>
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="flex items-center gap-2 font-semibold text-slate-900">
-                      <Bell className="h-4 w-4 text-brand-purple" /> In-App Notifications
-                    </div>
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      Used to display updates and important academic alerts directly inside the application.
-                    </p>
+                    <strong className="text-slate-900 block text-xs uppercase">Subscription & Billing Management</strong>
+                    <p className="mt-1 text-xs text-slate-600">Managing paid plan access, applying coupons, verifying renewals, and generating GST invoices.</p>
                   </div>
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="flex items-center gap-2 font-semibold text-slate-900">
-                      <Server className="h-4 w-4 text-brand-purple" /> Network & Internet
-                    </div>
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      Required to stream adaptive-bitrate video lectures, synchronize your study activity, and verify active course subscriptions.
-                    </p>
+                    <strong className="text-slate-900 block text-xs uppercase">Security & Service Communications</strong>
+                    <p className="mt-1 text-xs text-slate-600">Sending OTPs, transaction receipts, security notices, and investigating unauthorized access.</p>
                   </div>
+                </div>
+                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200 text-xs text-slate-600">
+                  <strong>Consent Notice:</strong> Consent is obtained via clear affirmative mechanisms. Consent will not be inferred merely because a user continues using the Services where applicable law requires explicit consent.
                 </div>
               </div>
             </section>
@@ -720,69 +628,55 @@ export function PrivacyPolicy() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple text-white text-sm font-bold">
                   7
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Student & Child Privacy</h3>
+                <h3 className="text-xl font-bold text-slate-900">7. Student & Child Privacy</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  PakkaPass is designed as an educational learning companion for students of Class 10, 11, and 12, many of whom are minors (under 18 years of age). We hold ourselves to the highest standards of child data safety:
+                  PakkaPass is designed for students in Classes 10, 11, and 12, many of whom are minors (below 18 years of age). We enforce strict child data protection standards under the DPDP Act, 2023:
                 </p>
                 <div className="space-y-2.5">
-                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10">
+                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10 text-xs sm:text-sm">
                     <CheckCircle2 className="h-4 w-4 text-brand-purple shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm"><strong>Parent / Guardian Information:</strong> During student account creation, PakkaPass collects parent/guardian details (name, mobile number, and email) to ensure parental awareness and oversight. Where applicable, PakkaPass will obtain and verify consent from the parent or lawful guardian before processing the personal data of a child, using a verification mechanism permitted under applicable law.</span>
+                    <span><strong>Verifiable Parental Consent:</strong> We obtain and verify parental/guardian consent before processing personal data of a minor as required under applicable law.</span>
                   </div>
-                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10">
+                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10 text-xs sm:text-sm">
                     <CheckCircle2 className="h-4 w-4 text-brand-purple shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm"><strong>Strictly No Behavioral Advertising:</strong> We never track children across third-party websites or serve targeted behavioral advertisements to minor users.</span>
+                    <span><strong>Strictly No Targeted Advertising:</strong> We never track children across third-party websites or serve targeted behavioral advertisements to minor users.</span>
                   </div>
-                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10">
+                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10 text-xs sm:text-sm">
                     <CheckCircle2 className="h-4 w-4 text-brand-purple shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm"><strong>Parent Communication & Visibility:</strong> Parents can stay updated regarding their child's learning engagement, course access, and academic milestones.</span>
+                    <span><strong>Child Well-Being & Safety:</strong> We collect only minimum necessary data and never process child data in a manner detrimental to their well-being.</span>
                   </div>
-                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10">
+                  <div className="flex items-start gap-2.5 rounded-xl bg-white p-3.5 border border-brand-purple/10 text-xs sm:text-sm">
                     <CheckCircle2 className="h-4 w-4 text-brand-purple shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm"><strong>Parental Rights:</strong> Parents and legal guardians can contact us at any time at <a href="mailto:support@pakkapass.in" className="text-brand-purple font-semibold underline">support@pakkapass.in</a> to inspect, modify, or request deletion of their child's educational records.</span>
+                    <span><strong>Parental Rights:</strong> Parents can contact <a href="mailto:support@pakkapass.in" className="text-brand-purple font-semibold underline">support@pakkapass.in</a> to review, correct, or delete their child's records.</span>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Section 8 */}
-            <section id="data-sharing" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="information-sharing-disclosure" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   8
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Who We Share Your Data With</h3>
+                <h3 className="text-xl font-bold text-slate-900">8. Information Sharing & Disclosure</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>
-                  <strong>We do not sell, rent, or trade your personal information.</strong> We only share information in the following limited and necessary circumstances:
-                </p>
-                <div className="space-y-3">
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <h4 className="font-semibold text-slate-900">1. Parents and Legal Guardians</h4>
-                    <p className="mt-1 text-xs text-slate-600">
-                      When a student account is linked to a parent's mobile number, relevant academic progress, completed chapters, and subscription status are accessible to the verified parent/guardian.
-                    </p>
+                <p><strong>We do not sell or rent your personal information.</strong> We share data only in limited circumstances:</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold mb-1">Parents & Guardians:</strong> Linked parents receive learning progress, completed topics, and subscription updates.
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <h4 className="font-semibold text-slate-900">2. Authorized Educational Institutions & Coaching Partners</h4>
-                    <p className="mt-1 text-xs text-slate-600">
-                      If your access is sponsored or managed by your school or coaching center, authorized academic coordinators may receive aggregate or individual completion reports to facilitate classroom teaching.
-                    </p>
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold mb-1">Educational Partners:</strong> Where access is school-sponsored, aggregate batch completion reports are shared with authorized coordinators.
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <h4 className="font-semibold text-slate-900">3. Vetted Service Providers & Infrastructure Partners</h4>
-                    <p className="mt-1 text-xs text-slate-600">
-                      We share necessary data with trusted cloud providers (AWS), RBI-authorized payment aggregator (Razorpay Payments Private Limited), and SMS/Email delivery partners who are bound by strict non-disclosure and data protection agreements.
-                    </p>
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold mb-1">Service Providers / Data Processors:</strong> Vetted cloud (AWS), payment (Razorpay), and SMS partners bound by strict data processing agreements.
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                    <h4 className="font-semibold text-slate-900">4. Legal & Regulatory Requirements</h4>
-                    <p className="mt-1 text-xs text-slate-600">
-                      We may disclose information if required by law, valid court order, government investigation, or to enforce our terms and protect the safety and rights of our users.
-                    </p>
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold mb-1">Legal Requirements:</strong> When mandated by valid law, court order, or regulatory authority.
                   </div>
                 </div>
               </div>
@@ -794,215 +688,246 @@ export function PrivacyPolicy() {
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   9
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Third-Party Services (AWS, Storage & Delivery)</h3>
+                <h3 className="text-xl font-bold text-slate-900">9. Third-Party Services</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>
-                  To provide world-class, ultra-fast video streaming and high reliability, PakkaPass integrates with industry-leading cloud technology partners:
-                </p>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
                     <div className="flex items-center gap-2 font-bold text-slate-900">
                       <Server className="h-4 w-4 text-brand-blue" /> Amazon Web Services (AWS)
                     </div>
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      We utilize <strong>Amazon Web Services (AWS)</strong> cloud infrastructure for secure, reliable hosting of our backend services, educational content, and video delivery.
-                    </p>
+                    <p className="mt-2 text-xs text-slate-600">We utilize secure AWS cloud infrastructure and Amazon S3 for storing educational media, video lectures, and application databases.</p>
                   </div>
                   <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
                     <div className="flex items-center gap-2 font-bold text-slate-900">
-                      <Mail className="h-4 w-4 text-brand-purple" /> Transactional SMS & Email
+                      <CreditCard className="h-4 w-4 text-emerald-600" /> Razorpay Payments
                     </div>
-                    <p className="mt-2 text-xs text-slate-600 leading-relaxed">
-                      We use enterprise SMS gateways and secure SMTP services to reliably send OTPs, passwordless login codes, and purchase receipts with end-to-end transport encryption.
-                    </p>
+                    <p className="mt-2 text-xs text-slate-600">RBI-authorized payment aggregator processing subscriptions with PCI-DSS Level 1 compliance and 256-bit TLS encryption.</p>
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Section 10 */}
-            <section id="payment-processing" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="payment-information" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   10
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Payment Processing & Billing (Razorpay)</h3>
+                <h3 className="text-xl font-bold text-slate-900">10. Payment Information & Billing</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  When you purchase a subscription or digital course pack on PakkaPass, your payment is securely processed via <strong>Razorpay Payments Private Limited</strong> ("Razorpay"), an RBI-authorized Payment Aggregator and PCI-DSS Level 1 compliant payment processor.
+                  When purchasing a subscription, we retain non-sensitive transaction metadata (Order ID, Payment ID, Plan Tier, Amount, and GST invoice records). <strong>PakkaPass does not collect or store full credit/debit card numbers, CVVs, or UPI PINs.</strong>
                 </p>
-                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200">
-                  <h4 className="font-semibold text-slate-900">Payment Security Measures:</h4>
-                  <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-slate-600">
-                    <li>PakkaPass does <strong>not</strong> hold or have visibility into your full 16-digit card number, CVV code, or UPI PIN.</li>
-                    <li>Payment information is encrypted using 256-bit SSL/TLS during transmission to the payment aggregator.</li>
-                    <li>We retain only essential transaction metadata: Order ID, Razorpay Payment ID, Plan selected, Amount, Timestamp, and GST tax invoice records.</li>
-                  </ul>
-                </div>
               </div>
             </section>
 
             {/* Section 11 */}
-            <section id="data-security" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="data-storage-security" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   11
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Data Storage & Security Measures</h3>
+                <h3 className="text-xl font-bold text-slate-900">11. Data Storage & Security Measures</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>
-                  We implement reasonable and appropriate technical and organizational measures designed to protect personal information against unauthorized access, alteration, disclosure, or destruction:
-                </p>
+                <p>We implement technical and organizational safeguards:</p>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-semibold text-slate-900">HTTPS / TLS Encryption</div>
-                    <p className="mt-1 text-xs text-slate-600">All communication between your mobile device, browser, and our backend servers is encrypted in transit using industry-standard TLS protocols.</p>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold mb-1">TLS / HTTPS Encryption:</strong> All data in transit between devices and servers is encrypted.
                   </div>
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-semibold text-slate-900">Cloud Infrastructure Security</div>
-                    <p className="mt-1 text-xs text-slate-600">Application data and media files are stored on secure Amazon Web Services (AWS) cloud servers with network firewall and access restrictions.</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-semibold text-slate-900">Role-Based Access Controls</div>
-                    <p className="mt-1 text-xs text-slate-600">Internal access to user records is restricted to authorized team members who require access to operate, maintain, and support the platform.</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-semibold text-slate-900">Authentication & Session Security</div>
-                    <p className="mt-1 text-xs text-slate-600">Mobile OTP verification and token-based authenticated sessions prevent unauthorized access to student accounts.</p>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold mb-1">Cloud Infrastructure:</strong> AWS servers with firewall protection and role-based access management.
                   </div>
                 </div>
               </div>
             </section>
 
             {/* Section 12 */}
-            <section id="data-retention" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="personal-data-breach" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   12
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Data Retention & Storage Limits</h3>
+                <h3 className="text-xl font-bold text-slate-900">12. Personal Data Breach Protocol</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  We retain personal data only for as long as necessary to fulfill the educational purposes outlined in this policy, unless a longer retention period is required by tax, accounting, or legal obligations.
+                  In the event of a personal data breach, PakkaPass will assess and respond to the incident in accordance with the DPDP Act and DPDP Rules, notifying the Data Protection Board of India and affected Data Principals where required.
                 </p>
-                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200 space-y-2 text-xs sm:text-sm text-slate-600">
-                  <p>• <strong>Active Accounts:</strong> Maintained for the duration of your academic study period until account deletion is requested.</p>
-                  <p>• <strong>Learning History:</strong> Preserved to allow students to maintain their course progress across academic terms unless account deletion is requested.</p>
-                  <p>• <strong>Billing & Tax Records:</strong> Billing and tax records may be retained for the period required under applicable tax, accounting, and other legal obligations.</p>
-                  <p>• <strong>Technical & Session Logs:</strong> Retained temporarily for operational integrity and troubleshooting, then periodically purged or anonymized.</p>
-                </div>
               </div>
             </section>
 
             {/* Section 13 */}
-            <section id="privacy-rights" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="data-retention" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   13
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Your Privacy Rights & Choices</h3>
+                <h3 className="text-xl font-bold text-slate-900">13. Data Retention & Storage Limits</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>Under the Digital Personal Data Protection Act (DPDP) and applicable laws, you hold clear rights regarding your personal information:</p>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-bold text-slate-900">Right to Access & Summary</div>
-                    <p className="mt-1 text-xs text-slate-600">You may request a copy of your personal data and academic records stored with PakkaPass.</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-bold text-slate-900">Right to Correction & Update</div>
-                    <p className="mt-1 text-xs text-slate-600">You can update your name, school, board, or stream directly in the app profile settings or request correction of inaccuracies.</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-bold text-slate-900">Right to Erasure / Deletion</div>
-                    <p className="mt-1 text-xs text-slate-600">You can delete your account and request complete erasure of your personal data as outlined in Section 14.</p>
-                  </div>
-                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50">
-                    <div className="font-bold text-slate-900">Right to Withdraw Consent</div>
-                    <p className="mt-1 text-xs text-slate-600">Where processing relies on consent, you may withdraw your consent at any time through app permissions or by contacting support.</p>
-                  </div>
-                </div>
+                <p>
+                  Personal data is retained only as long as necessary for educational service delivery, account maintenance, and statutory tax/accounting compliance. Retained data is periodically reviewed and securely disposed of or anonymized when no longer required.
+                </p>
               </div>
             </section>
 
             {/* Section 14 */}
-            <section id="account-deletion" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="your-privacy-rights" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-red-100 text-red-600 text-sm font-bold">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   14
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Account Deletion Process</h3>
+                <h3 className="text-xl font-bold text-slate-900">14. Your Privacy Rights & Choices</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>
-                  You have full autonomy to delete your PakkaPass account and all associated personal learning records at any time.
-                </p>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                  <h4 className="font-semibold text-slate-900">How to Initiate Account Deletion:</h4>
-                  <div className="mt-2 space-y-2 text-xs sm:text-sm text-slate-600">
-                    <p>
-                      To request deletion of your account and associated personal data, please send an email from your registered email address to <a href="mailto:support@pakkapass.in" className="text-brand-purple font-semibold underline">support@pakkapass.in</a> with the subject line <em>"Account Deletion Request"</em>, specifying your registered mobile number and student details.
-                    </p>
+                <p>Under the DPDP Act, 2023, you hold the following rights:</p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Right to Access & Summary:</strong> Request information on personal data processed.
                   </div>
-                  <p className="mt-3 text-xs text-muted-foreground">
-                    Upon identity verification, your personal profile, lecture watch records, and learning history will be permanently deleted or anonymized within 30 days, except records required to be retained under statutory tax and accounting regulations.
-                  </p>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Right to Correction:</strong> Update or correct inaccurate profile details.
+                  </div>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Right to Erasure / Deletion:</strong> Request account and data deletion.
+                  </div>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Right to Withdraw Consent:</strong> Withdraw previously given consent.
+                  </div>
                 </div>
               </div>
             </section>
 
             {/* Section 15 */}
-            <section id="cookies-tracking" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="account-deletion" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-red-100 text-red-600 text-sm font-bold">
                   15
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Cookies & Tracking Technologies</h3>
+                <h3 className="text-xl font-bold text-slate-900">15. Account Deletion Process</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  PakkaPass is committed to student data privacy. We do <strong>not</strong> use third-party advertising cookies, cross-site trackers, or behavioral analytics scripts on our platform.
+                  You can request account deletion via in-app support or by emailing <a href="mailto:support@pakkapass.in" className="text-brand-purple font-semibold underline">support@pakkapass.in</a> with subject <em>"Account Deletion Request"</em>. Records required under tax or legal obligations are retained as permitted by law.
                 </p>
-                <div className="rounded-xl bg-slate-50 p-4 border border-slate-200 text-xs sm:text-sm text-slate-600 space-y-2">
-                  <p>• <strong>No Cross-Site Tracking:</strong> We do not track, profile, or follow students across third-party websites or services.</p>
-                  <p>• <strong>Strictly Essential Technical Storage:</strong> The website utilizes only strictly necessary browser tokens and headers where required for basic interface preferences and security.</p>
-                </div>
               </div>
             </section>
 
             {/* Section 16 */}
-            <section id="governing-law" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="app-permissions" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   16
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Governing Law & Legal Jurisdiction</h3>
+                <h3 className="text-xl font-bold text-slate-900">16. Mobile App Permissions</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
-                <p>
-                  This Privacy Policy is governed by and construed in accordance with the laws of the <strong>Republic of India</strong>, including the Digital Personal Data Protection Act, 2023, the Information Technology Act, 2000, and the rules framed thereunder.
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Any disputes or legal claims arising out of or related to this Privacy Policy shall be subject to the exclusive jurisdiction of the competent courts in India.
-                </p>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Photos / Media:</strong> Uploading profile picture or accessing offline study notes.
+                  </div>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Camera Access:</strong> Taking an optional student avatar photo.
+                  </div>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">Internet & Network:</strong> Streaming lectures, sync progress, and verify subscriptions.
+                  </div>
+                  <div className="rounded-xl border border-slate-200 p-4 bg-slate-50/50 text-xs text-slate-600">
+                    <strong className="text-slate-900 block font-semibold">In-App Notifications:</strong> Academic alerts and study streak reminders.
+                  </div>
+                </div>
               </div>
             </section>
 
             {/* Section 17 */}
-            <section id="contact-grievance" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+            <section id="child-safety-advertising" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
               <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
                 <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
                   17
                 </span>
-                <h3 className="text-xl font-bold text-slate-900">Contact & Grievance Redressal</h3>
+                <h3 className="text-xl font-bold text-slate-900">17. Child Safety & Zero Advertising</h3>
               </div>
               <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
                 <p>
-                  In accordance with the Information Technology Act, 2000, the Digital Personal Data Protection Act, 2023, and the rules framed thereunder, any privacy queries, concerns, or grievances regarding the processing of personal data may be directed to our Grievance Officer:
+                  PakkaPass is strictly an educational service. We do not sell personal information, do not use children's data for targeted advertising, and collect only what is reasonably necessary.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 18 */}
+            <section id="third-party-links" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  18
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">18. Third-Party Links & Services</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  PakkaPass may contain links to external educational or payment resources. We encourage reviewing the privacy policies of any third-party services you access.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 19 */}
+            <section id="user-generated-content" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  19
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">19. User-Generated Content</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  Content uploaded by users (such as doubt questions, feedback, or profile photos) is processed solely to provide the relevant feature and is retained only as long as necessary.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 20 */}
+            <section id="ai-automated-processing" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  20
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">20. AI & Automated Processing</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  Where automated technologies or recommendations are used to support student learning, they operate strictly within authorized educational purposes in compliance with applicable law.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 21 */}
+            <section id="cross-border-transfers" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  21
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">21. Cross-Border Data Transfers</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  Where personal data is stored or processed on secure cloud infrastructure, PakkaPass complies with all cross-border data transfer requirements prescribed under Indian law.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 22 */}
+            <section id="contact-grievance-redressal" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  22
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">22. Contact & Grievance Redressal</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  In accordance with the Information Technology Act, 2000 and the Digital Personal Data Protection Act, 2023, privacy inquiries and grievances may be directed to our Grievance Officer:
                 </p>
                 <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 space-y-4">
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -1016,7 +941,7 @@ export function PrivacyPolicy() {
                       <div className="font-semibold text-brand-purple mt-0.5">
                         <a href="mailto:support@pakkapass.in" className="hover:underline">support@pakkapass.in</a>
                       </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">(Subject: <em>Attn: Grievance Officer / Privacy Query</em>)</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">(Subject: <em>Attn: Grievance Officer</em>)</div>
                     </div>
                     <div>
                       <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Corporate Entity</div>
@@ -1027,7 +952,7 @@ export function PrivacyPolicy() {
                       </div>
                     </div>
                     <div>
-                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Website</div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Corporate Website</div>
                       <div className="font-semibold text-brand-purple mt-0.5">
                         <a href="https://www.pratitieduskills.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">
                           www.pratitieduskills.com
@@ -1039,6 +964,36 @@ export function PrivacyPolicy() {
                     All formal privacy inquiries and grievances will be acknowledged and redressed in accordance with the timelines and procedures stipulated under applicable laws.
                   </div>
                 </div>
+              </div>
+            </section>
+
+            {/* Section 23 */}
+            <section id="changes-to-policy" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  23
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">23. Changes to This Privacy Policy</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  We may update this Privacy Policy from time to time. When we make material changes, we will notify users through the app, website, or email. The "Last Updated" date at the top will be updated accordingly.
+                </p>
+              </div>
+            </section>
+
+            {/* Section 24 */}
+            <section id="governing-law" className="scroll-mt-24 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-xs">
+              <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
+                <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-purple/10 text-sm font-bold text-brand-purple">
+                  24
+                </span>
+                <h3 className="text-xl font-bold text-slate-900">24. Governing Law & Legal Jurisdiction</h3>
+              </div>
+              <div className="mt-5 space-y-4 text-sm text-slate-700 leading-relaxed">
+                <p>
+                  This Privacy Policy is governed by and construed in accordance with the laws of the <strong>Republic of India</strong>, including the Digital Personal Data Protection Act, 2023, the Information Technology Act, 2000, and the rules framed thereunder.
+                </p>
               </div>
             </section>
 
