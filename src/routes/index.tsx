@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   PlayCircle, BookOpen, FileText, Layers, ClipboardCheck, LineChart,
   Sparkles, RefreshCw, ShieldCheck, Smartphone, Check, Star, Menu, X,
@@ -11,6 +11,7 @@ import heroImg from "@/assets/hero-students.jpg";
 import appScreen1 from "@/assets/app-screen-1.png";
 import appScreen2 from "@/assets/app-screen-2.png";
 import appScreen3 from "@/assets/app-screen-3.png";
+import { FacultyTeam } from "@/components/FacultyTeam";
 
 export const Route = createFileRoute("/")({
   component: Landing,
@@ -20,6 +21,7 @@ const NAV = [
   { label: "About", href: "#about" },
   { label: "Features", href: "#features" },
   { label: "Courses", href: "#courses" },
+  { label: "Faculty", href: "#faculty" },
   { label: "How it works", href: "#how" },
   { label: "FAQs", href: "#faq" },
 ];
@@ -98,6 +100,7 @@ function Landing() {
         <HowItWorks />
         <Courses />
         <Benefits />
+        <FacultyTeam />
         <Screenshots />
         <Testimonials />
         <FAQ />
@@ -200,21 +203,97 @@ function Hero() {
   );
 }
 
+function useCountUp(target: number, duration: number = 2000, decimals: number = 0) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement | null>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const startAnimation = () => {
+      if (started.current) return;
+      started.current = true;
+
+      const startTime = performance.now();
+      const frame = (now: number) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // smooth easeOutExpo
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const currentVal = ease * target;
+        setCount(currentVal);
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          setCount(target);
+        }
+      };
+      requestAnimationFrame(frame);
+    };
+
+    if (!ref.current) {
+      startAnimation();
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          startAnimation();
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target, duration]);
+
+  const formatted =
+    decimals > 0
+      ? count.toFixed(decimals)
+      : Math.floor(count).toLocaleString();
+
+  return { ref, value: formatted };
+}
+
+const TRUST_STATS = [
+  { target: 50, suffix: "K+", label: "Active students", decimals: 0 },
+  { target: 1200, suffix: "+", label: "Video lectures", decimals: 0 },
+  { target: 25, suffix: "K+", label: "Practice questions", decimals: 0 },
+  { target: 4.8, suffix: "★", label: "Play Store rating", decimals: 1 },
+];
+
+function StatCounterItem({
+  target,
+  suffix,
+  label,
+  decimals,
+}: {
+  target: number;
+  suffix: string;
+  label: string;
+  decimals: number;
+}) {
+  const { ref, value } = useCountUp(target, 2200, decimals);
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-2xl font-extrabold text-gradient-brand md:text-3xl tabular-nums tracking-tight">
+        {value}
+        {suffix}
+      </div>
+      <div className="mt-1 text-xs text-muted-foreground md:text-sm">{label}</div>
+    </div>
+  );
+}
+
 function TrustBar() {
-  const stats = [
-    { k: "50K+", v: "Active students" },
-    { k: "1,200+", v: "Video lectures" },
-    { k: "25K+", v: "Practice questions" },
-    { k: "4.8★", v: "Play Store rating" },
-  ];
   return (
     <section className="border-y border-border bg-white">
       <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-8 md:grid-cols-4 md:px-6">
-        {stats.map((s) => (
-          <div key={s.v} className="text-center">
-            <div className="text-2xl font-extrabold text-gradient-brand md:text-3xl">{s.k}</div>
-            <div className="mt-1 text-xs text-muted-foreground md:text-sm">{s.v}</div>
-          </div>
+        {TRUST_STATS.map((s) => (
+          <StatCounterItem key={s.label} {...s} />
         ))}
       </div>
     </section>
@@ -589,6 +668,7 @@ function Footer() {
         { label: "About", href: "#about" },
         { label: "Features", href: "#features" },
         { label: "Courses", href: "#courses" },
+        { label: "Faculty & Team", href: "#faculty" },
         { label: "FAQs", href: "#faq" },
       ],
     },
