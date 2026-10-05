@@ -4,7 +4,7 @@ import {
   PlayCircle, BookOpen, FileText, Layers, ClipboardCheck, LineChart,
   Sparkles, RefreshCw, ShieldCheck, Smartphone, Check, Star, Menu, X,
   Download, ArrowRight, Clock, Target, Trophy, Globe, Brain, GraduationCap,
-  Facebook, Instagram, Linkedin, Youtube, Mail, ChevronDown,
+  Facebook, Instagram, Linkedin, Youtube, ChevronDown,
 } from "lucide-react";
 import logo from "@/assets/sidebarlogo.png";
 import heroImg from "@/assets/hero-students.jpg";
@@ -697,7 +697,6 @@ function Footer() {
                 { icon: Instagram, href: "https://www.instagram.com/pakkapass2027/", label: "Instagram" },
                 { icon: Linkedin, href: "https://www.linkedin.com/company/pakkapass", label: "LinkedIn" },
                 { icon: Youtube, href: "https://www.youtube.com/@pakkapass", label: "YouTube" },
-                { icon: Mail, href: "mailto:support@pakkapass.in", label: "Email" },
               ].map(({ icon: Icon, href, label }) => (
                 <a key={label} href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} aria-label={label} className="grid h-9 w-9 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-gradient-brand hover:text-white hover:border-transparent">
                   <Icon className="h-4 w-4" />
