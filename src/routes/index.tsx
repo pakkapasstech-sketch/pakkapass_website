@@ -675,10 +675,7 @@ function Footer() {
     {
       title: "Legal",
       links: [
-        { label: "Privacy Policy", to: "/privacy" },
-        { label: "Terms & Conditions", href: "#" },
-        { label: "Refund Policy", href: "#" },
-        { label: "Cookie Policy", href: "#" },
+        { label: "Privacy Policy", to: "/privacy" } as { label: string; to?: string; href?: string },
       ],
     },
   ];
