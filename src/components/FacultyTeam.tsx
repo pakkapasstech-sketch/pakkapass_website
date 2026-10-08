@@ -180,6 +180,20 @@ export const FACULTY_MEMBERS: FacultyMember[] = [
     dotColor: "bg-blue-500",
     icon: Atom,
   },
+  {
+    id: "p-geetha",
+    name: "Dr. P. Geetha",
+    degrees: "M.Sc., M.Phil., PhD.",
+    role: "Physics Faculty",
+    subject: "Physics",
+    experience: "20+ Years Experience • Corporate Colleges",
+    bio: "Highly qualified Physics faculty member with M.Sc., M.Phil., and Ph.D. qualifications. With over 20 years of teaching experience across leading corporate colleges, she specializes in concept-oriented, student-focused Physics education. Her expertise helps students build strong conceptual foundations and achieve excellent academic performance.",
+    highlights: ["PhD Qualified", "20+ Yrs Exp", "Corporate Colleges", "Concept-Oriented Teaching"],
+    avatarGradient: "from-blue-600 to-cyan-900",
+    badgeStyle: "bg-blue-50 text-blue-700 border-blue-200",
+    dotColor: "bg-blue-500",
+    icon: Atom,
+  },
 ];
 
 export function FacultyTeam() {
