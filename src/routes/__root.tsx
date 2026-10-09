@@ -10,7 +10,10 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import logo from "../assets/sidebarlogo.png";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+
+const SITE_URL = "https://www.pakkapass.in";
 
 function NotFoundComponent() {
   return (
@@ -84,6 +87,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. Access expert video lectures, digital notes, previous year papers and progress tracking in one place.",
       },
       { name: "author", content: "PakkaPass" },
+      { name: "robots", content: "index, follow" },
+      { name: "keywords", content: "PakkaPass, exam preparation app, Class 10 11 12, board exams, video lectures, digital notes, previous year papers, entrance exam preparation" },
+      { name: "theme-color", content: "#6C3BE0" },
       { property: "og:title", content: "PakkaPass — an exam-centric App" },
       {
         property: "og:description",
@@ -92,6 +98,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "PakkaPass" },
+      { property: "og:url", content: SITE_URL },
+      { property: "og:image", content: `${SITE_URL}${logo}` },
+      { property: "og:locale", content: "en_IN" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "PakkaPass — an exam-centric App" },
       {
@@ -99,10 +108,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Learn smarter for board and entrance exams with PakkaPass. Video lectures, notes, PYQs and analytics for Class 10–12.",
       },
+      { name: "twitter:image", content: `${SITE_URL}${logo}` },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
       { rel: "icon", href: "/favicon.svg", type: "image/x-icon" },
+      { rel: "apple-touch-icon", href: logo },
+      { rel: "canonical", href: SITE_URL },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -117,11 +129,25 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
+const STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  name: "PakkaPass",
+  url: SITE_URL,
+  logo: `${SITE_URL}${logo}`,
+  description:
+    "PakkaPass is an exam-centric learning app for students of Class 10, 11 and 12. Access expert video lectures, digital notes, previous year papers and progress tracking in one place.",
+};
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(STRUCTURED_DATA) }}
+        />
       </head>
       <body>
         {children}
