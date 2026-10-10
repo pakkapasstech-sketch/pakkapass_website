@@ -88,6 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "author", content: "PakkaPass" },
       { name: "robots", content: "index, follow" },
+      { name: "google-site-verification", content: "JMZTNNVYv0Qyz93B2WNc6I5JfUiEldny3Jq9dYS-4Ck" },
       { name: "keywords", content: "PakkaPass, exam preparation app, Class 10 11 12, board exams, video lectures, digital notes, previous year papers, entrance exam preparation" },
       { name: "theme-color", content: "#6C3BE0" },
       { property: "og:title", content: "PakkaPass — an exam-centric App" },
